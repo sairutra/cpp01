@@ -15,7 +15,7 @@ CFLAGS      := -Wfatal-errors -Wall -Wextra -Wpedantic -Wconversion -Wshadow -We
 #---------------------------------------------------------------------------------
 #DO NOT EDIT BELOW THIS LINE
 #---------------------------------------------------------------------------------
-SOURCES     := main.cpp PhoneBook.cpp Contact.cpp Utils.cpp
+SOURCES     := main.cpp newZombie.cpp randomChump.cpp 
 OBJECTS     := $(patsubst $(SRCDIR)/%,$(OBJDIR)/%,$(SOURCES:.$(SRCEXT)=.$(OBJEXT)))
 DEPS        := $(OBJECTS:.o=.d)
 

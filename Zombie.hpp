@@ -16,8 +16,6 @@ public:
 		Zombie(void);
 		Zombie(std::string);
 		~Zombie(void);
-		Zombie *newZombie(std::string);
-		void randomChump(std::string);
 };
 
 #endif

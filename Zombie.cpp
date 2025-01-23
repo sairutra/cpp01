@@ -5,7 +5,7 @@ void	Zombie::announce(void)
 	std::cout << name << semicolon << "  BraiiiiiiinnnzzzZ..." << std::endl;
 }
 
-Zombie* Zombie::newZombie(std::string name)
+Zombie* newZombie(std::string name)
 {
 	return (new Zombie(name));
 }
@@ -27,4 +27,5 @@ Zombie::Zombie(void)
 
 Zombie::~Zombie(void)
 {
+	std::cout << name << semicolon << "See ya lattaaahh suckaahss" << std::endl;
 }
