@@ -1,13 +1,8 @@
-#include "Zombie.hpp";
+#include "Zombie.hpp"
 
 void	Zombie::announce(void)
 {
 	std::cout << name << semicolon << "  BraiiiiiiinnnzzzZ..." << std::endl;
-}
-
-Zombie* newZombie(std::string name)
-{
-	return (new Zombie(name));
 }
 
 void randomChump(std::string name)
@@ -16,9 +11,9 @@ void randomChump(std::string name)
 	zombie.announce();
 }
 
-Zombie::Zombie(std::string name)
+Zombie::Zombie(std::string title)
 {
-	name = name;
+	name = title;
 }
 
 Zombie::Zombie(void)
