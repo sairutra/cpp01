@@ -10,5 +10,6 @@ int main (void)
 	heapZombie->announce();
 	randomChump("jeff");
 	heapZombie->announce();
+	delete heapZombie;
 }
 
