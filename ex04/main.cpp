@@ -1,6 +1,7 @@
 #include <iostream>
 #include <fstream>
 #include "Arguments.hpp"
+#include <sys/stat.h>
 
 bool parseArgc(int argc)
 {
@@ -69,6 +70,28 @@ void	replaceStrings(Arguments args)
 	writeFile.close();
 }
 
+
+bool fileExists (const std::string& name)
+{
+ 	struct stat buffer;
+	return (stat (name.c_str(), &buffer) == 0); 
+}
+
+bool	checkArguments(Arguments args)
+{
+	if (args.getFilename() == args.getReplaceFilename())
+	{
+		std::cout << "Error: input and output file must differ" << std::endl;
+		return (true);
+	}
+	if (!fileExists(args.getFilename()))
+	{
+		std::cout << "Error: input file does not exist" << std::endl;
+		return (true);
+	}
+	return (false);
+}
+
 int	main(int argc, char **argv)
 {
 	Arguments args;
@@ -76,6 +99,8 @@ int	main(int argc, char **argv)
 	if (parseArgc(argc))
 		return (1);
 	args = parseArguments(argv);
+	if (checkArguments(args))
+		return (1);
 	copyFile(args);
 	replaceStrings(args);
 	return (0);
