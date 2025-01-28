@@ -45,15 +45,18 @@ std::string	createReadOut(Arguments args, std::string &readout)
 	{
 		tempString = newReadOut.substr(0, position);
 		tempString += args.getReplacement();
-		tempString += newReadOut.substr(position + args.getReplacement().length(), newReadOut.length());
+		tempString += newReadOut.substr(position + 
+			args.getReplacement().length(), newReadOut.length());
 		newReadOut = tempString;
 		position = newReadOut.find(args.getTarget());
 	}
 	return (newReadOut);
 }
 
-void	replaceLines(Arguments args, std::fstream &readFile, std::ofstream &writeFile)
+void	replaceStrings(Arguments args)
 {
+	std::fstream readFile(args.getFilename(), std::ios::in);
+	std::ofstream writeFile(args.getReplaceFilename(), std::ios::out);
 	std::string readout;
 
 	while (!readFile.eof())
@@ -62,22 +65,14 @@ void	replaceLines(Arguments args, std::fstream &readFile, std::ofstream &writeFi
 		readout = createReadOut(args, readout);
 		writeFile << readout << std::endl;
 	}
-}
-
-void	replaceStrings(Arguments args)
-{
-	std::fstream readFile(args.getFilename(), std::ios::in);
-	std::ofstream writeFile(args.getReplaceFilename(), std::ios::out);
-
-	replaceLines(args, readFile, writeFile);
 	readFile.close();
 	writeFile.close();
 }
+
 int	main(int argc, char **argv)
 {
 	Arguments args;
 
-	// parsing input
 	if (parseArgc(argc))
 		return (1);
 	args = parseArguments(argv);
