@@ -65,7 +65,7 @@ std::string	createReadOut(Arguments args, std::string &readout)
 		tempString = newReadOut.substr(0, position);
 		tempString += args.getReplacement();
 		tempString += newReadOut.substr(position + 
-			args.getReplacement().length(), newReadOut.length());
+			args.getTarget().length(), newReadOut.length());
 		newReadOut = tempString;
 		position = newReadOut.find(args.getTarget());
 	}
