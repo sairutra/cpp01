@@ -7,7 +7,7 @@ bool parseArgc(int argc)
 {
 	if (argc != 4)
 	{
-		std::cout << "Invalid number of arguments" << std::endl;
+		std::cerr << "Invalid number of arguments" << std::endl;
 		return (true);
 	}
 	return (false);
@@ -23,13 +23,31 @@ Arguments parseArguments(char **argv)
 	return (args);
 }
 
+bool	checkCinFailure(void)
+{
+	if (std::cin.fail())
+		return (true);
+	return (false);
+}
+
+void	throwFileException(void)
+{
+	throw std::runtime_error("file");
+}
+
+void	throwCinException(void)
+{
+	throw std::runtime_error("cin");
+}
+
 void	copyFile(Arguments args)
 {
 	std::ifstream source(args.getFilename(), std::ios::binary);
 	std::ofstream dest(args.getReplaceFilename(), std::ios::binary);
 
+	if (!source.is_open() || !dest.is_open())
+		throwFileException();
 	dest << source.rdbuf();
-
 	source.close();
 	dest.close();
 }
@@ -60,16 +78,19 @@ void	replaceStrings(Arguments args)
 	std::ofstream writeFile(args.getReplaceFilename(), std::ios::out);
 	std::string readout;
 
+	if (!readFile.is_open() || !writeFile.is_open())
+		throwFileException();
 	while (!readFile.eof())
 	{
 		getline(readFile, readout);
+		if (checkCinFailure())
+			throwCinException();
 		readout = createReadOut(args, readout);
 		writeFile << readout << std::endl;
 	}
 	readFile.close();
 	writeFile.close();
 }
-
 
 bool fileExists (const std::string& name)
 {
@@ -81,12 +102,12 @@ bool	checkArguments(Arguments args)
 {
 	if (args.getFilename() == args.getReplaceFilename())
 	{
-		std::cout << "Error: input and output file must differ" << std::endl;
+		std::cerr << "Error: input and output file must differ" << std::endl;
 		return (true);
 	}
 	if (!fileExists(args.getFilename()))
 	{
-		std::cout << "Error: input file does not exist" << std::endl;
+		std::cerr << "Error: input file does not exist" << std::endl;
 		return (true);
 	}
 	return (false);
