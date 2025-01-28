@@ -1,6 +1,6 @@
 #include <iostream>
 #include <fstream>
-#include <Arguments.hpp>
+#include "Arguments.hpp"
 
 bool parseArgc(int argc)
 {
@@ -20,22 +20,10 @@ Arguments parseArguments(char **argv)
 	args.setTarget(argv[2]);
 	args.setReplacement(argv[3]);
 	return (args);
-	}
+}
 
-
-int	main(int argc, char **argv)
+void	copyFile(Arguments args)
 {
-	Arguments args;
-	std::string tempString;
-	std::string readout;
-	int	position;
-
-	// parsing input
-	if (parseArgc)
-		return (1);
-	args = parseArguments(argv);
-
-	//copy file
 	std::ifstream source(args.getFilename(), std::ios::binary);
 	std::ofstream dest(args.getReplaceFilename(), std::ios::binary);
 
@@ -43,23 +31,57 @@ int	main(int argc, char **argv)
 
 	source.close();
 	dest.close();
+}
 
-	// replace strings
-	std::fstream readFile(args.getFilename(), std::ios::in);
-	std::ofstream writeFile(args.getReplaceFilename(), std::ios::out);
+std::string	createReadOut(Arguments args, std::string &readout)
+{
+	std::string newReadOut;
+	std::string::size_type	position;
+	std::string tempString;
+
+	newReadOut = readout;
+	position = readout.find(args.getTarget());
+	while (position != std::string::npos)
+	{
+		tempString = newReadOut.substr(0, position);
+		tempString += args.getReplacement();
+		tempString += newReadOut.substr(position + args.getReplacement().length(), newReadOut.length());
+		newReadOut = tempString;
+		position = newReadOut.find(args.getTarget());
+	}
+	return (newReadOut);
+}
+
+void	replaceLines(Arguments args, std::fstream &readFile, std::ofstream &writeFile)
+{
+	std::string readout;
+
 	while (!readFile.eof())
-		{
-			getline(readFile, readout);
-			position = readout.find(args.getTarget());
-			if (position >= 0)
-			{
-				tempString = readout.substr(0, position);
-				tempString += args.getReplacement();
-				tempString += readout.substr(position + args.getReplacement().length(), readout.length());
-				readout = tempString;
-			}
+	{
+		getline(readFile, readout);
+		readout = createReadOut(args, readout);
 		writeFile << readout << std::endl;
 	}
+}
+
+void	replaceStrings(Arguments args)
+{
+	std::fstream readFile(args.getFilename(), std::ios::in);
+	std::ofstream writeFile(args.getReplaceFilename(), std::ios::out);
+
+	replaceLines(args, readFile, writeFile);
 	readFile.close();
 	writeFile.close();
+}
+int	main(int argc, char **argv)
+{
+	Arguments args;
+
+	// parsing input
+	if (parseArgc(argc))
+		return (1);
+	args = parseArguments(argv);
+	copyFile(args);
+	replaceStrings(args);
+	return (0);
 }

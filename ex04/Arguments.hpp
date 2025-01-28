@@ -2,7 +2,6 @@
 #	define ARGUMENTS_HPP
 
 #include <iostream>
-#include "Weapon.hpp"
 
 class Arguments
 {
