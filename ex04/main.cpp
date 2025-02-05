@@ -40,18 +40,6 @@ void	throwCinException(void)
 	throw std::runtime_error("cin");
 }
 
-void	copyFile(Arguments args)
-{
-	std::ifstream source(args.getFilename(), std::ios::binary);
-	std::ofstream dest(args.getReplaceFilename(), std::ios::binary);
-
-	if (!source.is_open() || !dest.is_open())
-		throwFileException();
-	dest << source.rdbuf();
-	source.close();
-	dest.close();
-}
-
 std::string	createReadOut(Arguments args, std::string &readout)
 {
 	std::string newReadOut;
@@ -122,7 +110,6 @@ int	main(int argc, char **argv)
 	args = parseArguments(argv);
 	if (checkArguments(args))
 		return (1);
-	copyFile(args);
 	replaceStrings(args);
 	return (0);
 }
