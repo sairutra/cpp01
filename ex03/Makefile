@@ -1,5 +1,5 @@
 #Compiler and Linker
-CC          := g++ 
+CC          := c++ 
 
 #The Target Binary Program
 TARGET      := cold_war
