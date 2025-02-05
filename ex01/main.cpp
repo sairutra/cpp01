@@ -9,7 +9,6 @@ int main (void)
 	stackZombie.announce();
 	heapZombie = newZombie("jimmy");
 	heapZombie->announce();
-	randomChump("jeff");
 	heapZombie->announce();
 	horde = zombieHorde(5, "hector");
 	for (int i = 0; i < 5; ++i)
